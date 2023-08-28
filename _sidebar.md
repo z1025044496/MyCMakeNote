@@ -1,0 +1,5 @@
+* [变量](/01_variable/basic_var.md)
+  * [普通变量](/01_variable/basic_var.md)
+  * [环境变量](/01_variable/env_var.md)
+  * [缓存变量](/01_variable/cache_var.md)
+  * [变量作用域](/01_variable/var_scope.md)
