@@ -3,3 +3,4 @@
   * [环境变量](/01_variable/env_var.md)
   * [缓存变量](/01_variable/cache_var.md)
   * [变量作用域](/01_variable/var_scope.md)
+* [字符串](/02_string/string.md)

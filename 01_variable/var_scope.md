@@ -136,7 +136,7 @@ message("${cache_var1}")
 
 运行结果
 ```term
-zhaohaifei5@spc3-hz20257180:/mnt/d/WSL/CMakeLearn/build$ cmake ..
+zhaohaifei@asdfasdfsa:/mnt/d/WSL/CMakeLearn/build$ cmake ..
 persistent-缓存变量1
 外部变量,hello:hello1
 外层函数的内部变量,hello:hello2
