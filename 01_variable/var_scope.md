@@ -82,3 +82,74 @@ dir-parent_var1:parent_var1
 -- Generating done (0.1s)
 -- Build files have been written to: /mnt/d/WSL/CMakeLearn/build
 ```
+
+> 缓存变量作用域
+
+```term
+├── CMakeLists.txt
+├── fun
+├──└── CMakeLists.txt
+├── persistet
+└───└── CMakeLists.txt
+```
+
+主目录CMakeLists:
+```php
+cmake_minimum_required(VERSION 3.12)
+project(test09)
+
+add_subdirectory(persistent)
+add_subdirectory(func)
+```
+
+fun目录CMakeLists:
+```php
+# 函数嵌套调用, 外层函数定义的变量能否被内层函数引用
+set(hello "hello1")
+set(hellox "hellox")
+
+function(inter_func)
+    message("内层函数引用(外部变量)或(外层函数的变量),hello:${hello}")
+    message("内层函数引用(外部变量)或(外层函数的变量),hellox:${hellox}")
+endfunction()
+
+function(foo)
+    message("外部变量,hello:${hello}")
+    set(hello "hello2")
+    message("外层函数的内部变量,hello:${hello}")
+
+    inter_func() # 嵌套调用
+endfunction()
+
+foo()
+message("hello:${hello}")
+inter_func()
+
+message("func-${cache_var1}") # 主要看这一行
+```
+
+persistent目录CMakeLists:
+```php
+set(cache_var1 "persistent-缓存变量1" CACHE STRING "abc")
+message("${cache_var1}")
+```
+
+运行结果
+```term
+zhaohaifei5@spc3-hz20257180:/mnt/d/WSL/CMakeLearn/build$ cmake ..
+persistent-缓存变量1
+外部变量,hello:hello1
+外层函数的内部变量,hello:hello2
+内层函数引用(外部变量)或(外层函数的变量),hello:hello2
+内层函数引用(外部变量)或(外层函数的变量),hellox:hellox
+hello:hello1
+内层函数引用(外部变量)或(外层函数的变量),hello:hello1
+内层函数引用(外部变量)或(外层函数的变量),hellox:hellox
+func-persistent-缓存变量1
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: /mnt/d/WSL/CMakeLearn/build
+```
+
+1. 缓存变量在整个cmake工程的编译生命周期内都有效，工程内的其他任意目录都可以访问缓存变量，注意cmake是从上到下来解析CMakeLists.txt文件的。
+2. 在func目录下的CMakeLists.txt中引用cache_var1变量，也能获取到其值。
